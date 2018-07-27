@@ -23,6 +23,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+from __future__ import absolute_import
 import os
 import re
 import string
@@ -30,10 +31,11 @@ from goose.utils import FileHelper
 from goose.utils.encoding import smart_unicode
 from goose.utils.encoding import smart_str
 from goose.utils.encoding import DjangoUnicodeDecodeError
+import six
 TABSSPACE = re.compile(r'[\s\t]+')
 
 def innerTrim(value):
-    if isinstance(value, (unicode, str)):
+    if isinstance(value, (six.text_type, str)):
         # remove tab and white space
         value = re.sub(TABSSPACE, ' ', value)
         value = ''.join(value.splitlines())
@@ -102,7 +104,7 @@ class StopWords(object):
     def remove_punctuation(self, content):
         # code taken form
         # http://stackoverflow.com/questions/265960/best-way-to-strip-punctuation-from-a-string-in-python
-        if isinstance(content, unicode):
+        if isinstance(content, six.text_type):
             content = content.encode('utf-8')
         return content.translate(self.TRANS_TABLE, string.punctuation).decode('utf-8')
 

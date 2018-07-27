@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from unittest import TestCase, main as unittest_main
 from pyteaser import Summarize, SummarizeUrl
 

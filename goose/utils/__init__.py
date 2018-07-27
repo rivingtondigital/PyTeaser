@@ -20,13 +20,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+from __future__ import absolute_import
 import time
 import hashlib
 import re
 import os
 import goose
 import codecs
-import urlparse
+import six.moves.urllib.parse
+import six
 
 
 class BuildURL(object):
@@ -89,7 +91,7 @@ class ParsingCandidate(object):
 class RawHelper(object):
     @classmethod
     def get_parsing_candidate(self, url, raw_html):
-        if isinstance(raw_html, unicode):
+        if isinstance(raw_html, six.text_type):
             raw_html = raw_html.encode('utf-8')
         link_hash = '%s.%s' % (hashlib.md5(raw_html).hexdigest(), time.time())
         return ParsingCandidate(url, link_hash)

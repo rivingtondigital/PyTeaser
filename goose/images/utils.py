@@ -20,9 +20,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+from __future__ import absolute_import
 import hashlib
 import os
-import urllib2
+import six.moves.urllib.request, six.moves.urllib.error, six.moves.urllib.parse
 from PIL import Image
 from goose.utils.encoding import smart_str
 from goose.images.image import ImageDetails
@@ -112,8 +113,8 @@ class ImageUtils(object):
     @classmethod
     def fetch(self, http_client, src):
         try:
-            req = urllib2.Request(src)
-            f = urllib2.urlopen(req)
+            req = six.moves.urllib.request.Request(src)
+            f = six.moves.urllib.request.urlopen(req)
             data = f.read()
             return data
         except:

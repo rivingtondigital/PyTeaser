@@ -20,8 +20,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import urllib2
-import cookielib
+from __future__ import absolute_import
+import six.moves.urllib.request, six.moves.urllib.error, six.moves.urllib.parse
+import six.moves.http_cookiejar
+import six
 
 class HtmlFetcher(object):
 
@@ -35,18 +37,18 @@ class HtmlFetcher(object):
         """\
 
         """
-        if isinstance(url, unicode):
+        if isinstance(url, six.text_type):
             url = url.encode('utf-8')
         
-        cookiejar = cookielib.LWPCookieJar()
-        opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookiejar))
-        urllib2.install_opener(opener)
+        cookiejar = six.moves.http_cookiejar.LWPCookieJar()
+        opener = six.moves.urllib.request.build_opener(six.moves.urllib.request.HTTPCookieProcessor(cookiejar))
+        six.moves.urllib.request.install_opener(opener)
 
         headers = {'User-agent': config.browser_user_agent}
-        request = urllib2.Request(url, headers=headers)
+        request = six.moves.urllib.request.Request(url, headers=headers)
 
         try:
-            result = urllib2.urlopen(request).read()
+            result = six.moves.urllib.request.urlopen(request).read()
         except:
             return None
 

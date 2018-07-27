@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from pyteaser import SummarizeUrl
 from pprint import pprint
 urls = (u'http://www.huffingtonpost.com/2013/11/22/twitter-forward-secrecy_n_4326599.html',

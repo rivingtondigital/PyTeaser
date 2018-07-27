@@ -1,7 +1,12 @@
 # coding=utf-8
+from __future__ import absolute_import
+from __future__ import print_function
 from collections import Counter
 from math import fabs
 from re import split as regex_split, sub as regex_sub, UNICODE as REGEX_UNICODE
+from six.moves import map
+import six
+from six.moves import zip
 
 stopWords = set([
     "-", " ", ",", ".", "a", "e", "i", "o", "u", "t", "about", "above",
@@ -69,14 +74,14 @@ def SummarizeUrl(url):
     try:
         article = grab_link(url)
     except IOError:
-        print 'IOError'
+        print('IOError')
         return None
 
     if not (article and article.cleaned_text and article.title):
         return None
 
-    summaries = Summarize(unicode(article.title),
-                          unicode(article.cleaned_text))
+    summaries = Summarize(six.text_type(article.title),
+                          six.text_type(article.cleaned_text))
     return summaries
 
 
@@ -104,7 +109,7 @@ def grab_link(inurl):
         article = Goose().extract(url=inurl)
         return article
     except ValueError:
-        print 'Goose failed to extract article from url'
+        print('Goose failed to extract article from url')
         return None
     return None
 
@@ -170,7 +175,7 @@ def split_words(text):
         text = regex_sub(r'[^\w ]', '', text, flags=REGEX_UNICODE)  # strip special chars
         return [x.strip('.').lower() for x in text.split()]
     except TypeError:
-        print "Error while splitting characters"
+        print("Error while splitting characters")
         return None
 
 
@@ -205,8 +210,8 @@ def split_sentences(text):
     '''
     
     sentences = regex_split(u'(?<![A-ZА-ЯЁ])([.!?]"?)(?=\s+\"?[A-ZА-ЯЁ])', text, flags=REGEX_UNICODE)
-    s_iter = zip(*[iter(sentences[:-1])] * 2)
-    s_iter = [''.join(map(unicode,y)).lstrip() for y in s_iter]
+    s_iter = list(zip(*[iter(sentences[:-1])] * 2))
+    s_iter = [''.join(map(six.text_type,y)).lstrip() for y in s_iter]
     s_iter.append(sentences[-1])
     return s_iter
 
